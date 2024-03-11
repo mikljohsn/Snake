@@ -9,6 +9,9 @@ function start() {
 
   document.addEventListener("keydown", keyDown);
   document.addEventListener("keyup", keyUp);
+  createView();
+  createModel();
+  
 
   // start ticking
   tick();
@@ -168,18 +171,20 @@ function tick() {
 }
 
 // ******** MODEL ********
-const model = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-];
+const model = [];
+
+const GRID_HEIGHT = 30;
+const GRID_WIDTH = 30;
+
+function createModel() {
+  for (let row = 0; row < GRID_HEIGHT; row++) {
+    const newRow = [];
+    for (let col = 0; col < GRID_WIDTH; col++) {
+      newRow[col] = 0;
+    }
+    model[row] = newRow;
+  }
+}
 
 let direction;
 
@@ -219,9 +224,9 @@ function readFromCell(row, col) {
 
 function displayBoard() {
   const cells = document.querySelectorAll("#grid .cell");
-  for (let row = 0; row < 10; row++) {
-    for (let col = 0; col < 10; col++) {
-      const index = row * 10 + col;
+  for (let row = 0; row < GRID_HEIGHT; row++) {
+    for (let col = 0; col < GRID_WIDTH; col++) {
+      const index = row * GRID_WIDTH + col;
 
       switch (readFromCell(row, col)) {
         case 0:
@@ -234,6 +239,22 @@ function displayBoard() {
           cells[index].classList.add("goal");
           break;
       }
+    }
+  }
+}
+
+function createView() {
+  const board = document.querySelector("#board");
+
+  board.style.setProperty("--GRID_WIDTH", GRID_WIDTH);
+
+  for (let row = 0; row < GRID_HEIGHT; row++) {
+    for (let col = 0; col < GRID_WIDTH; col++) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      cell.dataset.row = row;
+      cell.dataset.col = col;
+      board.appendChild(cell);
     }
   }
 }
