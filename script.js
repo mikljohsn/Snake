@@ -173,6 +173,7 @@ function tick() {
   }
 
   // display the model in full
+  deathCheck();
   displayBoard();
 }
 
@@ -226,6 +227,17 @@ function generateGoal() {
   } else {
     generateGoal();
   }
+}
+
+function deathCheck() {
+  const head = queue[queue.length - 1];
+  for (let i = 0; i < queue.length - 1; i++) {
+    if (head.row === queue[i].row && head.col === queue[i].col) {
+      console.log("You died");
+      queue.length = 1;
+    }
+  }
+
 }
 
 // ******** VIEW ********
