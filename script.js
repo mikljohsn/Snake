@@ -1,3 +1,5 @@
+import { LinkedList } from "./linkedlist.js";
+
 "use strict";
 
 window.addEventListener("load", start);
@@ -11,6 +13,7 @@ function start() {
   document.addEventListener("keyup", keyUp);
   createView();
   createModel();
+  generateGoal();
   
 
   // start ticking
@@ -152,14 +155,17 @@ function tick() {
 
 
   //add new head to end of queue
-  queue.push(head);
+ // queue.push(head);
 
  /*  if(head !== goal){ //add new head to end of queue (food not implemented yet)
     queue.shift();
   } */
-
+  if (readFromCell(head.row, head.col) === 2) {
+    queue.push(head);
+    generateGoal();
+  }
   //remove tail from queue
-  queue.shift();
+  //queue.shift();
 
   //add queue to model
   for (const part of queue) {
@@ -199,16 +205,8 @@ const controls = {
 
 const queue = [
   {
-    row: 5,
-    col: 5
-  },
-  {
-    row: 5,
-    col: 6
-  },
-  {
-    row: 5,
-    col: 7
+    row: 15,
+    col: 15
   },
 ];
 
@@ -218,6 +216,16 @@ function writeToCell(row, col, value) {
 
 function readFromCell(row, col) {
   return model[row][col];
+}
+
+function generateGoal() {
+  const row = Math.floor(Math.random() * GRID_HEIGHT);
+  const col = Math.floor(Math.random() * GRID_WIDTH);
+  if (readFromCell(row, col) === 0) {
+    writeToCell(row, col, 2);
+  } else {
+    generateGoal();
+  }
 }
 
 // ******** VIEW ********

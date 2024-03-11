@@ -30,14 +30,14 @@ node2.prev = node1;
 node2.next = node3;
 node3.prev = node2;
 
-class Node {
+export class Node {
   constructor(data) {
     this.data = data;
     this.prev = null;
     this.next = null;
   }
 }
-class LinkedList {
+export class LinkedList {
   constructor() {
     this.head = null;
     this.tail = null;
